@@ -56,7 +56,7 @@ class PostProcessorRegistrationDelegate {
 		// Invoke BeanDefinitionRegistryPostProcessors first, if any.
 		Set<String> processedBeans = new HashSet<>();
 
-		if (beanFactory instanceof BeanDefinitionRegistry) {
+		if (beanFactory instanceof BeanDefinitionRegistry) {//true
 			BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;
 			List<BeanFactoryPostProcessor> regularPostProcessors = new LinkedList<>();
 			List<BeanDefinitionRegistryPostProcessor> registryPostProcessors =

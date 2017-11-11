@@ -86,9 +86,11 @@ public abstract class AbstractBeanDefinitionReader implements EnvironmentCapable
 
 		// Determine ResourceLoader to use.
 		if (this.registry instanceof ResourceLoader) {
+			//DefaultListableBeanFactory 没有实现 ResourceLoader
 			this.resourceLoader = (ResourceLoader) this.registry;
 		}
 		else {
+			//执行这一步
 			this.resourceLoader = new PathMatchingResourcePatternResolver();
 		}
 
@@ -97,6 +99,7 @@ public abstract class AbstractBeanDefinitionReader implements EnvironmentCapable
 			this.environment = ((EnvironmentCapable) this.registry).getEnvironment();
 		}
 		else {
+			//执行这一步
 			this.environment = new StandardEnvironment();
 		}
 	}
@@ -210,15 +213,18 @@ public abstract class AbstractBeanDefinitionReader implements EnvironmentCapable
 	 * @see #loadBeanDefinitions(org.springframework.core.io.Resource[])
 	 */
 	public int loadBeanDefinitions(String location, @Nullable Set<Resource> actualResources) throws BeanDefinitionStoreException {
+		// resourceLoader = ClassPathXmlApplicationContext
 		ResourceLoader resourceLoader = getResourceLoader();
 		if (resourceLoader == null) {
 			throw new BeanDefinitionStoreException(
 					"Cannot import bean definitions from location [" + location + "]: no ResourceLoader available");
 		}
-
+		// ClassPathXmlApplicationContext 实现了ResourcePatternResolver,if条件值为true
 		if (resourceLoader instanceof ResourcePatternResolver) {
 			// Resource pattern matching available.
 			try {
+				// getResources() jump to AbstractApplicationContext
+				// resources = defaultResourceLoader
 				Resource[] resources = ((ResourcePatternResolver) resourceLoader).getResources(location);
 				int loadCount = loadBeanDefinitions(resources);
 				if (actualResources != null) {

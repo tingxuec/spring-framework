@@ -65,6 +65,7 @@ public class ResourceEntityResolver extends DelegatingEntityResolver {
 	 * to load XML entity includes with
 	 */
 	public ResourceEntityResolver(ResourceLoader resourceLoader) {
+		// resourceLoader.getClassLoader() jump to DefaultResourceLoader
 		super(resourceLoader.getClassLoader());
 		this.resourceLoader = resourceLoader;
 	}

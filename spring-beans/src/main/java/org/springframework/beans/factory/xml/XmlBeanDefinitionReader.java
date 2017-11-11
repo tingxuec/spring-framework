@@ -135,6 +135,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	 * in the form of a BeanDefinitionRegistry
 	 */
 	public XmlBeanDefinitionReader(BeanDefinitionRegistry registry) {
+		//jump to AbstractBeanDefinitionReader
 		super(registry);
 	}
 

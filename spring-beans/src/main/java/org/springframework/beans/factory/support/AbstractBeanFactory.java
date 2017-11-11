@@ -754,6 +754,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	@Override
 	public void addPropertyEditorRegistrar(PropertyEditorRegistrar registrar) {
 		Assert.notNull(registrar, "PropertyEditorRegistrar must not be null");
+		// ResourceEditorRegistrar 实现了PropertyEditorRegistrar
 		this.propertyEditorRegistrars.add(registrar);
 	}
 

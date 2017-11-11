@@ -518,28 +518,35 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			prepareRefresh();
 
 			// Tell the subclass to refresh the internal bean factory.
+			//主要是加载了配置文件的信息，解析配置文件 参考图片 beanFactory=obtainFreshBeanFactory.png
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
-
+			// DefaultListableBeanFactory 实现了 ConfigurableListableBeanFactory
 			// Prepare the bean factory for use in this context.
+			//相当于注册各种组件
 			prepareBeanFactory(beanFactory);
 
 			try {
 				// Allows post-processing of the bean factory in context subclasses.
+				// 调用AbstractApplicationContext中的方法
 				postProcessBeanFactory(beanFactory);
 
 				// Invoke factory processors registered as beans in the context.
 				invokeBeanFactoryPostProcessors(beanFactory);
 
 				// Register bean processors that intercept bean creation.
+				//添加配置文件中配置的POSTprocessors
 				registerBeanPostProcessors(beanFactory);
 
 				// Initialize message source for this context.
-				initMessageSource();
+				// 没有定义messageSource的话，设置默认的DelegatingMessageSource
+				initMessageSource();//
 
 				// Initialize event multicaster for this context.
+				// 没有定义的话，默认SimpleApplicationEventMulticaster
 				initApplicationEventMulticaster();
 
 				// Initialize other special beans in specific context subclasses.
+				//ClassPathXmlApplicationContext 调用AbstractApplicationContext的方法，空方法
 				onRefresh();
 
 				// Check for listener beans and register them.
@@ -590,6 +597,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		}
 
 		// Initialize any placeholder property sources in the context environment
+		// jump to AbstractApplicationContext  for ClassPathXmlApplicationContext
 		initPropertySources();
 
 		// Validate that all properties marked as required are resolvable
@@ -604,7 +612,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	/**
 	 * <p>Replace any stub property sources with actual instances.
 	 * @see org.springframework.core.env.PropertySource.StubPropertySource
-	 * @see org.springframework.web.context.support.WebApplicationContextUtils#initServletPropertySources
+	 *  org.springframework.web.context.support.WebApplicationContextUtils#initServletPropertySources
 	 */
 	protected void initPropertySources() {
 		// For subclasses: do nothing by default.
@@ -617,6 +625,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * @see #getBeanFactory()
 	 */
 	protected ConfigurableListableBeanFactory obtainFreshBeanFactory() {
+		// ClasspathXmLApplicationContext jump to AbstractRefreshableApplicationContext
 		refreshBeanFactory();
 		ConfigurableListableBeanFactory beanFactory = getBeanFactory();
 		if (logger.isDebugEnabled()) {
@@ -656,7 +665,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		beanFactory.addBeanPostProcessor(new ApplicationListenerDetector(this));
 
 		// Detect a LoadTimeWeaver and prepare for weaving, if found.
-		if (beanFactory.containsBean(LOAD_TIME_WEAVER_BEAN_NAME)) {
+		if (beanFactory.containsBean(LOAD_TIME_WEAVER_BEAN_NAME)) {//false
 			beanFactory.addBeanPostProcessor(new LoadTimeWeaverAwareProcessor(beanFactory));
 			// Set a temporary ClassLoader for type matching.
 			beanFactory.setTempClassLoader(new ContextTypeMatchClassLoader(beanFactory.getBeanClassLoader()));
@@ -1246,6 +1255,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 */
 	@Nullable
 	protected BeanFactory getInternalParentBeanFactory() {
+		// ClassPathXmlApplicationContext return null
 		return (getParent() instanceof ConfigurableApplicationContext) ?
 				((ConfigurableApplicationContext) getParent()).getBeanFactory() : getParent();
 	}
@@ -1300,6 +1310,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 	@Override
 	public Resource[] getResources(String locationPattern) throws IOException {
+		// jump to  PathMatchingResourcePatternResolver
 		return this.resourcePatternResolver.getResources(locationPattern);
 	}
 

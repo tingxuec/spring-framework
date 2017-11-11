@@ -137,10 +137,12 @@ public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContex
 	public ClassPathXmlApplicationContext(
 			String[] configLocations, boolean refresh, @Nullable ApplicationContext parent)
 			throws BeansException {
-
+		// -> AbstractXmlApplicationContext -> AbstractRefreshableConfigApplicationContext
+		// -> AbstractRefreshableApplicationContext -> AbstractApplicationContext
 		super(parent);
 		setConfigLocations(configLocations);
 		if (refresh) {
+			// AbstractApplicationContext
 			refresh();
 		}
 	}

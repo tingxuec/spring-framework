@@ -200,6 +200,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	 * deserialized from this id back into the BeanFactory object, if needed.
 	 */
 	public void setSerializationId(@Nullable String serializationId) {
+		// serializationId = "org.springframework.context.support.ClassPathXmlApplicationContext@5702b3b1"
 		if (serializationId != null) {
 			serializableFactories.put(serializationId, new WeakReference<>(this));
 		}
